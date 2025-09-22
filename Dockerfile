@@ -19,4 +19,4 @@ COPY --from=appbuild /dist /usr/share/nginx/html
 COPY ./code/nginx_config/nginx.conf /etc/nginx/nginx.conf
 COPY ./code/nginx_config/default.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=solution_config ui/. /usr/share/nginx/html/config/
+COPY --from=solution_config config/. /usr/share/nginx/html/config/

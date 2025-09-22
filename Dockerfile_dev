@@ -13,4 +13,4 @@ RUN npm install
 COPY ./code /app
 COPY --from=solution_config overload/. /app/src/overload/
 COPY --from=solution_config src/. /app/src/app/
-COPY --from=solution_config ui/. /app/public/config/
+COPY --from=solution_config config/. /app/public/config/
