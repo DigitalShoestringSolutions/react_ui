@@ -9,7 +9,7 @@
     
 [dev]
     dockerfile = "Dockerfile_dev"
-    compose_partial = "snippet.yml"
+    compose_partial = "snippet-dev.yml"
     volume.data.ignore = true
     volume.user_config.ignore = true
 
