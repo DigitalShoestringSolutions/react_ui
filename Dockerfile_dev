@@ -1,12 +1,12 @@
 FROM node:24-alpine
 RUN apk add --no-cache jq
 WORKDIR /app
-COPY ./code/base_package.json /
+COPY ./code/base_package.json /app/
 
 ## use wildcard to avoid error if not present
-COPY --from=solution_config extra_dependencies.jso* /
+COPY --from=solution_config extra_dependencies.jso* /app/
 ## if extra_dependencies.json exists, merge the dependencies key with the values from base_package.json otherwise just use base_package.json
-RUN [ -f "extra_dependencies.json" ] && jq --slurpfile extra extra_dependencies.json '.dependencies *= $extra[0].dependencies' base_package.json > package.json || cp base_package.json package.json
+RUN [ -f "/app/extra_dependencies.json" ] && jq --slurpfile /app/extra extra_dependencies.json '.dependencies *= $extra[0].dependencies' /app/base_package.json > /app/package.json || cp /app/base_package.json /app/package.json
 
 RUN npm install
 
