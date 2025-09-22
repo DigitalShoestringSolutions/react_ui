@@ -1,8 +1,16 @@
 FROM node:24-alpine
+RUN apk add --no-cache jq
 WORKDIR /app
-COPY ./code/package.json /app
-RUN npm install
-COPY ./code/ /app
+COPY ./code/base_package.json /
 
-COPY --from=solution_config src/. /app/src/
+## use wildcard to avoid error if not present
+COPY --from=solution_config extra_dependencies.jso* /
+## if extra_dependencies.json exists, merge the dependencies key with the values from base_package.json otherwise just use base_package.json
+RUN [ -f "extra_dependencies.json" ] && jq --slurpfile extra extra_dependencies.json '.dependencies *= $extra[0].dependencies' base_package.json > package.json || cp base_package.json package.json
+
+RUN npm install
+
+COPY ./code /app
+COPY --from=solution_config overload/. /app/src/overload/
+COPY --from=solution_config src/. /app/src/app/
 COPY --from=solution_config ui/. /app/public/config/
